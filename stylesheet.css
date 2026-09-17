@@ -1,0 +1,644 @@
+/* peachOS Desktop Widgets.
+ *
+ * The glass card is peachOS's Notification Center recipe (lib/liquidGlass.js).
+ * Widget text is coloured/sized inline in JS via lib/fonts.js. This sheet
+ * covers the edit-mode chrome and the picker. */
+
+/* ---- edit-mode chrome on a placed widget --------------------------- */
+
+.peachos-widget--editing {
+    /* the glass card is the affordance; nothing extra */
+}
+
+.peachos-widget-chrome {
+    spacing: 4px;
+}
+
+.peachos-widget-chrome-btn {
+    background-color: rgba(20, 20, 22, 0.85);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 11px;
+    min-height: 22px;
+    padding: 1px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.peachos-widget-chrome-btn:hover {
+    background-color: rgba(40, 40, 44, 0.95);
+}
+
+.peachos-widget-chrome-remove {
+    padding: 1px 4px;
+}
+
+.peachos-widget-chrome-remove:hover {
+    background-color: rgba(220, 60, 55, 0.95);
+}
+
+/* ---- picker (widget gallery) ------------------------------------- */
+
+.peachos-picker-body {
+    spacing: 0;
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #ffffff;
+}
+
+/* grab handle at the top of the panel -- click / drag / scroll to
+   collapse the panel to a peek and back */
+.peachos-picker-handle {
+    padding: 5px 0 3px 0;
+}
+
+.peachos-picker-handle-chevrons {
+    spacing: 0;
+}
+
+.peachos-picker-handle-chevron {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.peachos-picker-handle:hover .peachos-picker-handle-chevron {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.peachos-picker-side {
+    spacing: 4px;
+    padding: 16px 12px;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.peachos-picker-search {
+    background-color: rgba(0, 0, 0, 0.28);
+    /* the ring follows Settings -> Appearance accent, like macOS */
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    border-color: -st-accent-color;
+    border-radius: 10px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.peachos-picker-search:focus {
+    border-color: -st-accent-color;
+    background-color: rgba(0, 0, 0, 0.36);
+}
+
+.peachos-picker-search StIcon {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.peachos-picker-side-scroll {
+    padding-right: 2px;
+}
+
+.peachos-picker-side-item {
+    border-radius: 9px;
+    padding: 0;
+}
+
+.peachos-picker-side-item-box {
+    spacing: 10px;
+    padding: 7px 10px;
+    font-size: 14px;
+}
+
+.peachos-picker-side-item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.peachos-picker-side-item.selected {
+    background-color: rgba(255, 255, 255, 0.16);
+    font-weight: 600;
+}
+
+.peachos-picker-main {
+    padding: 18px 22px 14px 22px;
+    spacing: 2px;
+}
+
+.peachos-picker-head {
+    spacing: 8px;
+}
+
+.peachos-picker-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* the panel bleeds ~44px past the screen edge -- reserve that band so the
+   footer action bar lands flush with the visible bottom edge */
+.peachos-picker-wrap {
+    padding-bottom: 44px;
+}
+
+/* full-width action bar: drag hint on the left, accent Done pill on the right */
+.peachos-picker-footer {
+    padding: 12px 22px;
+    spacing: 12px;
+    background-color: rgba(0, 0, 0, 0.32);
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.peachos-picker-footer-hint {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.peachos-picker-done {
+    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #007AFF;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 6px 22px;
+    min-height: 22px;
+}
+
+.peachos-picker-done:hover {
+    background-color: -st-accent-color;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.peachos-picker-done:active {
+    background-color: -st-accent-color;
+}
+
+.peachos-picker-section {
+    spacing: 10px;
+    padding-bottom: 20px;
+}
+
+.peachos-picker-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.55;
+}
+
+.peachos-picker-empty {
+    font-size: 13px;
+    opacity: 0.5;
+    padding: 20px 2px;
+}
+
+.peachos-picker-modeseg {
+    spacing: 2px;
+    background-color: rgba(0, 0, 0, 0.22);
+    border-radius: 9px;
+    padding: 2px;
+}
+
+.peachos-picker-modeseg-btn {
+    padding: 3px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.peachos-picker-modeseg-btn:hover {
+    color: #ffffff;
+}
+
+.peachos-picker-modeseg-btn.selected {
+    background-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+.peachos-picker-hint {
+    font-size: 12px;
+    opacity: 0.55;
+    padding-bottom: 14px;
+}
+
+.peachos-picker-scroll {
+    padding-right: 4px;
+    -st-vfade-offset: 22px;
+}
+
+/* thin, rounded, accent-tinted scrollbars (both panes) -- macOS style */
+.peachos-picker-scroll StScrollBar,
+.peachos-picker-side-scroll StScrollBar {
+    padding: 0;
+    width: 8px;
+}
+
+.peachos-picker-scroll StScrollBar StBin#trough,
+.peachos-picker-side-scroll StScrollBar StBin#trough {
+    background-color: transparent;
+    border: none;
+}
+
+.peachos-picker-scroll StScrollBar StButton#vhandle,
+.peachos-picker-side-scroll StScrollBar StButton#vhandle {
+    background-color: rgba(255, 255, 255, 0.28);
+    background-color: -st-accent-color;
+    border: none;
+    border-radius: 999px;
+    margin: 2px 2px;
+    min-width: 4px;
+}
+
+.peachos-picker-scroll StScrollBar StButton#vhandle:hover,
+.peachos-picker-side-scroll StScrollBar StButton#vhandle:hover {
+    background-color: -st-accent-color;
+    margin: 2px 1px;
+}
+
+.peachos-picker-grid {
+    spacing: 0;
+    padding-top: 4px;
+    padding-bottom: 28px;
+}
+
+.peachos-picker-grid-row {
+    spacing: 16px;
+}
+
+.peachos-picker-preview {
+    transition-duration: 120ms;
+}
+
+.peachos-picker-preview:hover {
+    opacity: 0.8;
+}
+
+.peachos-picker-sizeseg {
+    spacing: 2px;
+    background-color: rgba(0, 0, 0, 0.22);
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.peachos-picker-sizeseg-btn {
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.peachos-picker-sizeseg-btn:hover {
+    color: #ffffff;
+}
+
+.peachos-picker-sizeseg-btn.selected {
+    background-color: rgba(255, 255, 255, 0.24);
+    color: #ffffff;
+}
+
+.peachos-picker-weatherloc {
+    spacing: 7px;
+    padding: 2px 0 12px 0;
+}
+
+.peachos-picker-weatherloc-head { spacing: 10px; }
+
+.peachos-picker-weatherloc-label {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.peachos-picker-wx-manual { spacing: 4px; }
+
+.peachos-picker-wx-entry {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.peachos-picker-wx-entry:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.peachos-picker-wx-results { spacing: 2px; }
+
+.peachos-picker-wx-result {
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.peachos-picker-wx-result:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+}
+
+.peachos-picker-wx-current {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.peachos-picker-ghost {
+    background-color: rgba(20, 20, 22, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+    padding: 10px 14px;
+    spacing: 4px;
+    color: #ffffff;
+}
+
+.peachos-picker-ghost-label {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ---- google calendar connect state ------------------------------ */
+
+.peachos-gcal-connect {
+    border-radius: 18px;
+    transition-duration: 120ms;
+}
+
+.peachos-gcal-connect:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---- iCloud Photos connect state ------------------------------- */
+
+.peachos-photos-connect {
+    border-radius: 18px;
+    transition-duration: 120ms;
+}
+
+.peachos-photos-connect:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---- mail widgets (connect state + tap-to-open) ---------------- */
+
+.peachos-mail-connect {
+    border-radius: 18px;
+    transition-duration: 120ms;
+}
+
+.peachos-mail-connect:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.peachos-mail-open {
+    border-radius: 18px;
+    transition-duration: 120ms;
+}
+
+.peachos-mail-open:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ---- calendar agenda scroll (no visible scrollbar) -------------- */
+
+.peachos-cal-scroll {
+    padding: 0;
+}
+
+.peachos-cal-scroll StScrollBar,
+.peachos-cal-scroll .scroll-bar {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    -st-minimum-size: 0;
+}
+
+.peachos-cal-scroll StScrollView StScrollBar {
+    width: 0;
+}
+
+/* ---- news topic picker ----------------------------------------- */
+
+.peachos-newstopic {
+    padding: 18px 20px 14px 20px;
+    spacing: 10px;
+    color: #ffffff;
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.peachos-newstopic-header { spacing: 10px; }
+
+.peachos-newstopic-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.peachos-newstopic-done {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.peachos-newstopic-done:hover { background-color: rgba(255, 255, 255, 0.24); }
+
+.peachos-newstopic-scroll { padding-right: 4px; }
+
+.peachos-newstopic-item {
+    padding: 9px 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.peachos-newstopic-item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.peachos-newstopic-item.selected {
+    background-color: rgba(10, 132, 255, 0.9);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ---- stocks ticker picker -------------------------------------- */
+
+.peachos-stockpick {
+    padding: 18px 20px 14px 20px;
+    spacing: 12px;
+    color: #ffffff;
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.peachos-stockpick-header { spacing: 10px; }
+
+.peachos-stockpick-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.peachos-stockpick-done {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.peachos-stockpick-done:hover { background-color: rgba(255, 255, 255, 0.24); }
+
+.peachos-stockpick-chips {
+    spacing: 6px;
+}
+
+.peachos-stockpick-empty,
+.peachos-stockpick-status {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    padding: 2px 2px;
+}
+
+.peachos-stockpick-chip {
+    spacing: 5px;
+    padding: 4px 6px 4px 10px;
+    border-radius: 11px;
+    background-color: rgba(255, 255, 255, 0.14);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.peachos-stockpick-chip-x {
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.peachos-stockpick-chip-x:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.peachos-stockpick-entry {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.peachos-stockpick-entry:focus {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.peachos-stockpick-scroll { padding-right: 4px; }
+
+.peachos-stockpick-result {
+    padding: 9px 10px;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.peachos-stockpick-result:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.peachos-stockpick-result.selected {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.peachos-stockpick-result-sym {
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 58px;
+}
+
+.peachos-stockpick-result-name {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    padding-left: 4px;
+}
+
+.peachos-stockpick-result-exch {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    padding-left: 6px;
+}
+
+/* ---- world-clock city picker ------------------------------------- */
+
+.peachos-cities {
+    padding: 20px 22px;
+    spacing: 14px;
+    color: #ffffff;
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.peachos-cities-header { spacing: 10px; }
+
+.peachos-cities-title {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.peachos-cities-done {
+    background-color: rgba(60, 175, 95, 0.55);
+    border-radius: 9px;
+    padding: 5px 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+.peachos-cities-done:hover { background-color: rgba(60, 195, 105, 0.8); }
+
+.peachos-cities-slots { spacing: 6px; }
+
+.peachos-cities-slot {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+.peachos-cities-slot:hover { background-color: rgba(255, 255, 255, 0.12); }
+.peachos-cities-slot.target {
+    border-color: rgba(120, 170, 255, 0.9);
+    background-color: rgba(120, 170, 255, 0.14);
+}
+
+.peachos-cities-slot-row { spacing: 10px; }
+.peachos-cities-slot-num { font-size: 12px; opacity: 0.4; min-width: 12px; }
+.peachos-cities-slot-code {
+    font-family: "PeachRounded", sans-serif;
+    font-size: 13px; font-weight: 700; min-width: 42px;
+}
+.peachos-cities-slot-name { font-size: 13px; }
+.peachos-cities-slot-time { font-size: 12px; opacity: 0.6; }
+.peachos-cities-slot-empty { font-size: 12px; opacity: 0.45; }
+.peachos-cities-slot-clear {
+    color: rgba(255,255,255,0.7);
+    border-radius: 8px; padding: 2px;
+}
+.peachos-cities-slot-clear:hover { background-color: rgba(220,60,55,0.9); color: #fff; }
+
+.peachos-cities-search {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9px;
+    padding: 7px 12px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.peachos-cities-scroll { }
+.peachos-cities-list { spacing: 1px; }
+
+.peachos-cities-item {
+    border-radius: 7px;
+    padding: 7px 10px;
+}
+.peachos-cities-item:hover { background-color: rgba(255, 255, 255, 0.12); }
+.peachos-cities-item.chosen { opacity: 0.4; }
+.peachos-cities-item-code {
+    font-family: "PeachRounded", sans-serif;
+    font-size: 12px; font-weight: 700; min-width: 42px; opacity: 0.8;
+}
+.peachos-cities-item-name { font-size: 13px; }

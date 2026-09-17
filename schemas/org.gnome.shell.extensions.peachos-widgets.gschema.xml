@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.peachos-widgets"
+          path="/org/gnome/shell/extensions/peachos-widgets/">
+
+    <key name="edit-mode" type="b">
+      <default>false</default>
+      <summary>Desktop widget edit mode</summary>
+      <description>
+        Flipped by the "Manage Widgets" pill in the Control Center. When true the
+        desktop enters edit mode: the dock and open windows hide and the widget
+        picker appears.
+      </description>
+    </key>
+
+    <key name="widgets" type="s">
+      <default>'[]'</default>
+      <summary>Placed widgets</summary>
+      <description>
+        JSON array of placed widget instances. Each entry is
+        {id, type, variant, monitor, xRel, yRel} where xRel/yRel are the
+        widget's top-left as a fraction of its monitor's work area.
+      </description>
+    </key>
+
+    <key name="weather-auto-location" type="b">
+      <default>true</default>
+      <summary>Detect the weather location from the public IP address</summary>
+      <description>
+        When true the weather widgets geolocate by IP and ignore the manual
+        latitude/longitude/name keys below.
+      </description>
+    </key>
+
+    <key name="weather-latitude" type="d">
+      <default>32.08354</default>
+      <summary>Weather latitude</summary>
+      <description>
+        Used when weather-auto-location is off, and as the fallback when IP
+        geolocation fails at boot. Default: Savannah, Georgia.
+      </description>
+    </key>
+    <key name="weather-longitude" type="d">
+      <default>-81.09983</default>
+      <summary>Weather longitude</summary>
+    </key>
+    <key name="weather-location-name" type="s">
+      <default>'Savannah, Georgia, United States'</default>
+      <summary>Weather location label</summary>
+    </key>
+    <key name="weather-unit" type="s">
+      <choices>
+        <choice value="celsius"/>
+        <choice value="fahrenheit"/>
+      </choices>
+      <default>'fahrenheit'</default>
+      <summary>Temperature unit</summary>
+    </key>
+
+  </schema>
+</schemalist>
