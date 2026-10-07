@@ -7,11 +7,14 @@
 // (lib/widgetPicker.js). Widget content lives in widgets/, shared data
 // providers in lib/providers/. See .claude/plans/fluffy-dreaming-canyon.md.
 
+import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import St from 'gi://St';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 import {WidgetLayer} from './lib/widgetLayer.js';
 import {EditMode} from './lib/editMode.js';
@@ -23,6 +26,9 @@ import {StocksProvider} from './lib/providers/stocks.js';
 import {NewsProvider} from './lib/providers/news.js';
 import {IcloudPhotosProvider} from './lib/providers/icloudPhotos.js';
 import {MailProvider} from './lib/providers/mail.js';
+import {GitHubProvider} from './lib/providers/github.js';
+import {ScreenTimeProvider} from './lib/providers/screenTime.js';
+import {AccentColorProvider} from './lib/accentColor.js';
 
 export default class PeachosWidgetsExtension extends Extension {
     enable() {
@@ -43,6 +49,7 @@ export default class PeachosWidgetsExtension extends Extension {
 
     _build() {
         try {
+            this._accentColor = new AccentColorProvider();
             this._weather = new WeatherProvider(this._settings);
             this._calendar = new ICloudCalendarSource();
             this._gcal = new GoogleCalendarSource();
@@ -51,9 +58,12 @@ export default class PeachosWidgetsExtension extends Extension {
             this._news = new NewsProvider();
             this._icloudPhotos = new IcloudPhotosProvider();
             this._mail = new MailProvider();
+            this._github = new GitHubProvider();
+            this._screenTime = new ScreenTimeProvider();
 
             const ctx = {
                 settings: this._settings,
+                accentColor: this._accentColor,
                 weather: this._weather,
                 calendar: this._calendar,
                 gcal: this._gcal,
@@ -62,6 +72,8 @@ export default class PeachosWidgetsExtension extends Extension {
                 news: this._news,
                 icloudPhotos: this._icloudPhotos,
                 mail: this._mail,
+                github: this._github,
+                screenTime: this._screenTime,
                 path: this.path,
             };
 
@@ -88,6 +100,69 @@ export default class PeachosWidgetsExtension extends Extension {
             this._bgSettings.connectObject('changed', onBgChange, this);
             this._ifaceSettings.connectObject('changed::color-scheme', onBgChange, this);
 
+            // Quick Settings toggle for Desktop Widgets (1 column, placed next to Airplane Mode)
+            const qs = Main.panel.statusArea.quickSettings;
+            if (qs?.menu) {
+                this._quickToggle = new QuickSettings.QuickToggle({
+                    title: 'Widgets',
+                    iconName: 'view-grid-symbolic',
+                    toggleMode: true,
+                });
+                this._quickToggle.connect('clicked', () => {
+                    const current = this._settings.get_boolean('edit-mode');
+                    this._settings.set_boolean('edit-mode', !current);
+                    qs.menu.close();
+                });
+                this._settings.connectObject('changed::edit-mode', () => {
+                    if (this._quickToggle)
+                        this._quickToggle.checked = this._settings.get_boolean('edit-mode');
+                }, this);
+                this._quickToggle.checked = this._settings.get_boolean('edit-mode');
+
+                const rfkillItem = qs._rfkill?.quickSettingsItems?.[0];
+                if (rfkillItem && qs.menu._grid) {
+                    qs.menu._grid.insert_child_above(this._quickToggle, rfkillItem);
+                    qs.menu._completeAddItem(this._quickToggle, 1);
+                } else {
+                    qs.menu.addItem(this._quickToggle, 1);
+                }
+            }
+
+            // Add the authentic macOS Control Center toggle icon alongside battery, wifi, bluetooth, sound indicators
+            if (qs && qs._indicators) {
+                const iconFile = Gio.File.new_for_path(GLib.build_filenamev([this.path, 'icons', 'control-center-symbolic.svg']));
+                this._ccIcon = new St.Icon({
+                    gicon: new Gio.FileIcon({file: iconFile}),
+                    icon_name: 'macos-control-center-symbolic',
+                    icon_size: 16,
+                    style_class: 'system-status-icon',
+                    y_align: Clutter.ActorAlign.CENTER,
+                    x_align: Clutter.ActorAlign.CENTER,
+                });
+                this._ccBox = new St.BoxLayout({
+                    style_class: 'panel-status-indicators-box',
+                    y_align: Clutter.ActorAlign.CENTER,
+                    x_align: Clutter.ActorAlign.CENTER,
+                    margin_left: 4,
+                });
+                this._ccBox.add_child(this._ccIcon);
+                qs._indicators.add_child(this._ccBox);
+            }
+
+            // Hide keyboard layout from top bar per user request
+            if (Main.panel.statusArea.keyboard?.container) {
+                Main.panel.statusArea.keyboard.container.hide();
+                this._hidingKeyboard = false;
+                this._keyboardNotifyId = Main.panel.statusArea.keyboard.container.connect(
+                    'notify::visible', () => {
+                        if (this._hidingKeyboard) return;
+                        this._hidingKeyboard = true;
+                        Main.panel.statusArea.keyboard.container.hide();
+                        this._hidingKeyboard = false;
+                    }
+                );
+            }
+
             console.log(`[peachos-widgets] enabled (${this._layer.count} widget(s) placed)`);
         } catch (e) {
             logError(e, '[peachos-widgets] _build() failed');
@@ -106,6 +181,31 @@ export default class PeachosWidgetsExtension extends Extension {
             this._bgRaiseId = 0;
         }
 
+        if (this._quickToggle) {
+            this._quickToggle.destroy();
+            this._quickToggle = null;
+        }
+
+        const qs = Main.panel.statusArea.quickSettings;
+        if (this._ccBox && qs?._indicators) {
+            try { qs._indicators.remove_child(this._ccBox); } catch (_) {}
+            this._ccBox.destroy();
+            this._ccBox = null;
+        }
+
+        if (this._ccIcon) {
+            this._ccIcon.destroy();
+            this._ccIcon = null;
+        }
+
+        if (this._keyboardNotifyId && Main.panel.statusArea.keyboard?.container) {
+            try {
+                Main.panel.statusArea.keyboard.container.disconnect(this._keyboardNotifyId);
+            } catch (_) {}
+            this._keyboardNotifyId = 0;
+            Main.panel.statusArea.keyboard.container.show();
+        }
+
         this._editMode?.destroy();
         this._layer?.destroy();
         this._weather?.destroy();
@@ -116,6 +216,9 @@ export default class PeachosWidgetsExtension extends Extension {
         this._news?.destroy();
         this._icloudPhotos?.destroy();
         this._mail?.destroy();
+        this._github?.destroy();
+        this._screenTime?.destroy();
+        this._accentColor?.destroy();
         clearCropCache();
 
         this._editMode = null;
@@ -128,6 +231,8 @@ export default class PeachosWidgetsExtension extends Extension {
         this._news = null;
         this._icloudPhotos = null;
         this._mail = null;
+        this._github = null;
+        this._screenTime = null;
         this._settings = null;
         this._bgSettings = null;
         this._ifaceSettings = null;

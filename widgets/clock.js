@@ -205,13 +205,14 @@ export class DigitalClock {
 // ---------------------------------------------------------------------------
 
 export class AnalogClock {
-    constructor(parent, size, style) {
+    constructor(parent, size, style, ctx) {
         this._fg = size.fg || '255,255,255';
         this._mode = size.mode || 'glass';
         this._style = style || 'minimal';
         this._radius = size.radius || 48;
         this._roundness = 5;
         this._logicalW = size.w;
+        this._ctx = ctx || size.ctx;
 
         this._root = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
@@ -222,6 +223,12 @@ export class AnalogClock {
         this._face = new St.DrawingArea({x_expand: true, y_expand: true});
         this._face.connect('repaint', a => this._draw(a));
         this._root.add_child(this._face);
+
+        if (this._ctx?.accentColor) {
+            this._unsubAccent = this._ctx.accentColor.subscribe(() => {
+                this._face.queue_repaint();
+            });
+        }
 
         this._tick = size.preview
             ? {destroy() {}}
@@ -255,21 +262,18 @@ export class AnalogClock {
                 : (classic && this._mode === 'glass' ? [1, 1, 1] : this._rgb().slice(0, 3));
             const D = (a = 1) => [dial[0], dial[1], dial[2], a];
 
-            // --- clock plate (circle) ---
-            if (classic) {
-                if (this._mode === 'glass')
-                    cr.setSourceRGBA(1, 1, 1, 0.20);
-                else
+            // --- clock plate (circle in solid modes only; glass mode floats seamlessly on frosted glass) ---
+            if (this._mode !== 'glass') {
+                if (classic) {
                     cr.setSourceRGBA(1, 1, 1, 1); // white face
-            } else if (this._mode === 'glass') {
-                cr.setSourceRGBA(...this._rgb(0.20));
-            } else if (this._mode === 'light') {
-                cr.setSourceRGBA(1, 1, 1, 1);
-            } else {
-                cr.setSourceRGBA(0.204, 0.204, 0.212, 1); // #343436
+                } else if (this._mode === 'light') {
+                    cr.setSourceRGBA(1, 1, 1, 1);
+                } else {
+                    cr.setSourceRGBA(0.204, 0.204, 0.212, 1); // #343436
+                }
+                cr.arc(cx, cy, r, 0, 2 * Math.PI);
+                cr.fill();
             }
-            cr.arc(cx, cy, r, 0, 2 * Math.PI);
-            cr.fill();
 
             const tickW = r * 0.020;
             const outerR = r - tickW * 2;              // 0.96 r
@@ -327,9 +331,8 @@ export class AnalogClock {
 
             const isGlass = this._mode === 'glass';
             const hand = D(isGlass ? 0.92 : 1.0);
-            // second hand + hinge: orange in solid modes, translucent white
-            // ("liquid glass") in glass mode
-            const second = isGlass ? D(0.9) : [...SECOND_ORANGE, 1];
+            const accent = this._ctx?.accentColor ? this._ctx.accentColor.getCairoColor().slice(0, 3) : SECOND_ORANGE;
+            const second = isGlass ? D(0.9) : [...accent, 1];
 
             // pill hand: thin stem (rect) + capsule (thick round-capped stroke)
             const drawHand = (turns, totalLen) => {
@@ -456,7 +459,8 @@ export class AnalogClock {
         const min = now.get_minute() + sec / 60;
         const hr = (now.get_hour() % 12) + min / 60;
         const hand = D(glass ? 0.92 : 1.0);
-        const second = glass ? D(0.9) : [...SECOND_ORANGE, 1];
+        const accent = this._ctx?.accentColor ? this._ctx.accentColor.getCairoColor().slice(0, 3) : SECOND_ORANGE;
+        const second = glass ? D(0.9) : [...accent, 1];
 
         const drawHand = (turns, totalLen) => {
             cr.save();
@@ -495,6 +499,7 @@ export class AnalogClock {
     }
 
     destroy() {
+        this._unsubAccent?.();
         this._tick.destroy();
         this._root.destroy();
     }

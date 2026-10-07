@@ -9,6 +9,9 @@ import {variantDef, sizeFor} from '../lib/widgetRegistry.js';
 import {CityPicker} from '../lib/cityPicker.js';
 import {NewsTopicPicker} from '../lib/newsTopicPicker.js';
 import {StockPicker} from '../lib/stockPicker.js';
+import {GithubPicker} from '../lib/githubPicker.js';
+import {CalendarPicker} from '../lib/calendarPicker.js';
+import {pickLocalPhoto} from './photos.js';
 
 const GRID = 8;
 const MODE_ORDER = ['glass', 'dark', 'light'];
@@ -47,6 +50,14 @@ export class WidgetFrame {
                 clocks: inst.clocks,
                 topic: inst.topic,
                 symbols: inst.symbols,
+                photoPath: inst.photoPath,
+                githubUser: inst.githubUser,
+                githubTheme: inst.githubTheme,
+                eventColorMode: inst.eventColorMode,
+                onConfigured: p => {
+                    if (p) inst.photoPath = p;
+                    this._callbacks.onConfigured?.(this);
+                },
                 setTint: t => this._glass.setTint(t),
                 setImage: p => this._glass.setImage(p),
             });
@@ -142,6 +153,15 @@ export class WidgetFrame {
             this._config = null;
         };
 
+        if (kind === 'photo') {
+            pickLocalPhoto(path => {
+                this.instance.photoPath = path;
+                this._content?.setPhotoPath?.(path);
+                this._callbacks.onConfigured?.(this);
+            });
+            return;
+        }
+
         if (kind === 'newsTopic') {
             this._config = new NewsTopicPicker(this.instance.topic || 'top', {
                 onChange: topic => {
@@ -161,6 +181,32 @@ export class WidgetFrame {
                 },
                 onDone: done,
             });
+        } else if (kind === 'github') {
+            this._config = new GithubPicker(
+                this.instance.githubUser || '',
+                this.instance.githubTheme || 'green',
+                {
+                    onChange: ({user, theme}) => {
+                        this.instance.githubUser = user;
+                        this.instance.githubTheme = theme;
+                        this._content?.setGithubUser?.(user);
+                        this._content?.setGithubTheme?.(theme);
+                        this._callbacks.onConfigured?.(this);
+                    },
+                    onDone: done,
+                });
+        } else if (kind === 'calendar') {
+            this._config = new CalendarPicker(
+                this.instance.eventColorMode || 'calendar',
+                this._ctx,
+                {
+                    onChange: mode => {
+                        this.instance.eventColorMode = mode;
+                        this._content?.setEventColorMode?.(mode);
+                        this._callbacks.onConfigured?.(this);
+                    },
+                    onDone: done,
+                });
         } else {
             this._config = new CityPicker(this.instance.clocks || [], {
                 onChange: clocks => {

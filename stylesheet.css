@@ -23,7 +23,6 @@
     padding: 1px 7px;
     font-size: 10px;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .peachos-widget-chrome-btn:hover {
@@ -642,3 +641,58 @@
     font-size: 12px; font-weight: 700; min-width: 42px; opacity: 0.8;
 }
 .peachos-cities-item-name { font-size: 13px; }
+
+/* ---- github config picker ---------------------------------------- */
+
+.peachos-githubpick {
+    padding: 18px 20px 14px 20px; spacing: 12px; color: #ffffff;
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.peachos-githubpick-header { spacing: 10px; }
+.peachos-githubpick-title { font-size: 18px; font-weight: 700; }
+.peachos-githubpick-done {
+    padding: 4px 12px; border-radius: 12px; background-color: rgba(255,255,255,0.14);
+    color: #ffffff; font-size: 12px; font-weight: 600;
+}
+.peachos-githubpick-done:hover { background-color: rgba(255,255,255,0.24); }
+.peachos-githubpick-entry {
+    padding: 8px 12px; border-radius: 10px; background-color: rgba(255,255,255,0.1);
+    color: #ffffff; font-size: 13px;
+}
+.peachos-githubpick-entry:focus { background-color: rgba(255,255,255,0.16); }
+.peachos-githubpick-current { font-size: 11px; color: rgba(255,255,255,0.45); padding: 0 2px; }
+.peachos-githubpick-section { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); padding-top: 4px; }
+.peachos-githubpick-themes { spacing: 8px; }
+.peachos-githubpick-theme { border-radius: 8px; border: 2px solid transparent; transition-duration: 120ms; }
+.peachos-githubpick-theme:hover { border-color: rgba(255,255,255,0.3); }
+.peachos-githubpick-theme.selected { border-color: rgba(255,255,255,0.9); }
+
+/* ---- calendar event color picker --------------------------------- */
+
+.peachos-calpick {
+    padding: 18px 20px 14px 20px; spacing: 14px; color: #ffffff;
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.peachos-calpick-header { spacing: 10px; }
+.peachos-calpick-title { font-size: 18px; font-weight: 700; }
+.peachos-calpick-done {
+    padding: 4px 12px; border-radius: 12px; background-color: rgba(255,255,255,0.14);
+    color: #ffffff; font-size: 12px; font-weight: 600;
+}
+.peachos-calpick-done:hover { background-color: rgba(255,255,255,0.24); }
+.peachos-calpick-option {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition-duration: 120ms;
+}
+.peachos-calpick-option:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+.peachos-calpick-option.selected {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.85);
+}
+

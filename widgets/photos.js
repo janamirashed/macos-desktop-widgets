@@ -1,12 +1,5 @@
-// Photos widget -- a random picture from your iCloud Photo Library, rotated
-// through the day. The image fills the squircle (painted by the glass card,
-// same as the News "story"); a small date sits over the base gradient.
-//
-// Sign-in + the local photo cache: lib/providers/icloudPhotos.js (backed by the
-// peachos-icloud-photos Python helper). When there's nothing cached yet the
-// widget shows a short "set up in Settings" note instead.
-//
-//   'square' / 'grid' -- one photo at the footprint's size.
+// Photos widget -- displays pictures from your laptop files or your
+// iCloud Photo Library.
 
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
@@ -16,8 +9,26 @@ import St from 'gi://St';
 import {FONT, fontStyle} from '../lib/fonts.js';
 import {buildConnectCard} from '../lib/connectCard.js';
 
-// Open peachOS Settings on the Internet Accounts page (where the iCloud sign-in
-// lives). Same subprocess spawn edsCalendar.openAccountSettings uses.
+export function pickLocalPhoto(onChosen) {
+    try {
+        const proc = Gio.Subprocess.new(
+            ['zenity', '--file-selection', '--title=Choose a Photo for Desktop Widget',
+             '--file-filter=Image Files (*.png, *.jpg, *.jpeg, *.webp, *.bmp, *.gif)|*.png *.jpg *.jpeg *.webp *.bmp *.gif *.PNG *.JPG *.JPEG *.WEBP'],
+            Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_SILENCE
+        );
+        proc.communicate_utf8_async(null, null, (p, res) => {
+            try {
+                const [, stdout] = p.communicate_utf8_finish(res);
+                const path = stdout ? stdout.trim() : null;
+                if (path && GLib.file_test(path, GLib.FileTest.EXISTS))
+                    onChosen(path);
+            } catch (_) {}
+        });
+    } catch (e) {
+        logError(e, '[peachos-widgets] zenity file selection failed');
+    }
+}
+
 function openICloudSettings() {
     for (const argv of [
         ['peachos-settings', 'internetaccounts'],
@@ -26,16 +37,13 @@ function openICloudSettings() {
         try {
             Gio.Subprocess.new(argv, Gio.SubprocessFlags.NONE);
             return;
-        } catch (e) {
-            // try the next
-        }
+        } catch (_) {}
     }
 }
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'];
 
-// "June 14, 2019" -> with a "N years ago today" tail when it's this calendar day
 function prettyDate(iso) {
     if (!iso)
         return '';
@@ -61,6 +69,8 @@ export class PhotosWidget {
         this._w = size.w;
         this._h = size.h;
         this._setImage = size.setImage;
+        this._photoPath = size.photoPath || null;
+        this._onConfigured = size.onConfigured;
 
         this._root = new Clutter.Actor({
             width: size.w, height: size.h, clip_to_allocation: true,
@@ -68,6 +78,13 @@ export class PhotosWidget {
         parent.add_child(this._root);
 
         this._unsub = ctx.icloudPhotos?.subscribe(() => this._render());
+        if (ctx.accentColor)
+            this._unsubAccent = ctx.accentColor.subscribe(() => this._render());
+    }
+
+    setPhotoPath(path) {
+        this._photoPath = path;
+        this._render();
     }
 
     _render() {
@@ -77,27 +94,59 @@ export class PhotosWidget {
         try {
             this._root.destroy_all_children();
 
+            // 1. Check if user configured a local photo or directory from laptop
+            if (this._photoPath && GLib.file_test(this._photoPath, GLib.FileTest.EXISTS)) {
+                let actualPath = this._photoPath;
+                let dateStr = '';
+
+                if (GLib.file_test(this._photoPath, GLib.FileTest.IS_DIR)) {
+                    // Pick a random image from directory
+                    const dir = Gio.File.new_for_path(this._photoPath);
+                    const enumerator = dir.enumerate_children(
+                        'standard::name,standard::content-type,time::modified',
+                        Gio.FileQueryInfoFlags.NONE, null
+                    );
+                    const images = [];
+                    let info;
+                    while ((info = enumerator.next_file(null)) !== null) {
+                        const name = info.get_name();
+                        if (name.match(/\.(png|jpg|jpeg|webp|bmp|gif)$/i))
+                            images.push({name, mtime: info.get_attribute_uint64('time::modified')});
+                    }
+                    if (images.length > 0) {
+                        const chosen = images[Math.floor(Math.random() * images.length)];
+                        actualPath = GLib.build_filenamev([this._photoPath, chosen.name]);
+                        if (chosen.mtime > 0) {
+                            const d = new Date(chosen.mtime * 1000);
+                            dateStr = `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+                        }
+                    }
+                } else {
+                    const file = Gio.File.new_for_path(this._photoPath);
+                    const info = file.query_info('time::modified', Gio.FileQueryInfoFlags.NONE, null);
+                    const mtime = info ? info.get_attribute_uint64('time::modified') : 0;
+                    if (mtime > 0) {
+                        const d = new Date(mtime * 1000);
+                        dateStr = `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+                    }
+                }
+
+                if (actualPath && GLib.file_test(actualPath, GLib.FileTest.EXISTS)) {
+                    this._setImage?.(actualPath);
+                    return;
+                }
+            }
+
+            // 2. Fall back to iCloud Photos if connected
             const cur = this._ctx.icloudPhotos?.get();
             const st = this._ctx.icloudPhotos?.status ?? {};
-            const fs = Math.max(10, Math.round(this._h * 0.075));
 
             if (cur && GLib.file_test(cur.path, GLib.FileTest.EXISTS)) {
                 this._setImage?.(cur.path);
-                const date = prettyDate(cur.date);
-                if (date) {
-                    const m = Math.round(this._h * 0.09);
-                    const lbl = new St.Label({
-                        text: date,
-                        style: fontStyle(FONT.display, fs, 0.95, '255,255,255')
-                            + ' font-weight: 600;',
-                    });
-                    lbl.set_position(m, Math.round(this._h - m - fs * 1.3));
-                    this._root.add_child(lbl);
-                }
                 return;
             }
 
-            // nothing to show -- the "set it up" placeholder
+            // 3. Nothing to show yet -- render placeholder with Choose Photo action
             this._setImage?.(null);
             this._renderPlaceholder(st);
         } finally {
@@ -106,29 +155,29 @@ export class PhotosWidget {
     }
 
     _renderPlaceholder(st) {
-        const fetching = st.connected && !st.reauthNeeded;
-        const status = !st.connected
-            ? 'Add your iCloud account in Settings to see photos from your library'
-            : st.reauthNeeded
-                ? 'Your iCloud session expired — sign in again in Settings'
-                : 'Loading your photos…';
+        const accentRgb = this._ctx.accentColor ? this._ctx.accentColor.rgb : '213, 97, 153';
 
         this._root.add_child(buildConnectCard({
             w: this._w, h: this._h, fg: '255,255,255',
             iconPath: GLib.build_filenamev(
                 [this._ctx.path, 'icons', 'app', 'icloud-photos.svg']),
-            markPath: GLib.build_filenamev(
-                [this._ctx.path, 'icons', 'app', 'apple-logo-white.svg']),
-            name: 'iCloud Photos',
-            status,
-            pill: fetching ? null : (st.reauthNeeded ? 'Sign In' : 'Open Settings'),
+            markPath: null,
+            name: 'Photos',
+            status: 'Choose any picture from your laptop files or connect iCloud Photos in Settings',
+            pill: 'Choose Photo…',
             styleClass: 'peachos-photos-connect',
-            onClick: () => openICloudSettings(),
+            onClick: () => {
+                pickLocalPhoto(path => {
+                    this.setPhotoPath(path);
+                    this._onConfigured?.(path);
+                });
+            },
         }));
     }
 
     destroy() {
         this._unsub?.();
+        this._unsubAccent?.();
         this._setImage?.(null);
         this._root.destroy();
     }

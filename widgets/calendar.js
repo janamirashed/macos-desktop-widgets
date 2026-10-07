@@ -97,12 +97,22 @@ export class CalendarWidget {
         this._w = size.w;
         this._h = size.h;
         this._fg = size.fg || '255,255,255';
-        // header + today badge use the accent -- white in glass, the brand
-        // colour in solid modes (Apple red / Google blue).
+        this._eventColorMode = size.eventColorMode || 'calendar'; // 'calendar' | 'accent'
+        // header + today badge use the system accent color in solid modes
         const [g, dk, lt] = ACCENTS[this._brand] || ACCENTS.apple;
         this._accent = this._cardMode === 'glass' ? g
             : (this._cardMode === 'light' ? lt : dk);
         this._accentRgb = this._accent.map(v => Math.round(v * 255)).join(',');
+
+        if (this._ctx.accentColor) {
+            this._accent = this._ctx.accentColor.getCairoColor().slice(0, 3);
+            this._accentRgb = this._ctx.accentColor.rgb;
+            this._unsubAccent = this._ctx.accentColor.subscribe(() => {
+                this._accent = this._ctx.accentColor.getCairoColor().slice(0, 3);
+                this._accentRgb = this._ctx.accentColor.rgb;
+                this._render();
+            });
+        }
 
         this._root = new Clutter.Actor({
             width: size.w, height: size.h, clip_to_allocation: true,
@@ -328,6 +338,11 @@ export class CalendarWidget {
         }
     }
 
+    setEventColorMode(mode) {
+        this._eventColorMode = mode || 'calendar';
+        this._render();
+    }
+
     _eventCard(ev, timeText, ls) {
         const rowH = Math.round(ls * 2.3);
         const card = new St.Widget({
@@ -339,10 +354,14 @@ export class CalendarWidget {
             x_expand: true,
             style: `padding: 0 ${Math.round(ls * 0.55)}px; spacing: ${Math.round(ls * 0.45)}px;`,
         });
+        const pipColor = (this._eventColorMode === 'accent')
+            ? `rgb(${this._accentRgb})`
+            : (ev.color || (ev.allDay ? '#FF9500' : `rgb(${this._accentRgb})`));
+
         inner.add_child(new St.Widget({
             width: 3, height: Math.round(rowH * 0.55),
             y_align: Clutter.ActorAlign.CENTER,
-            style: `background-color: ${ev.allDay ? '#FF9500' : '#4B9EFF'}; border-radius: 2px;`,
+            style: `background-color: ${pipColor}; border-radius: 2px;`,
         }));
         const title = new St.Label({
             text: ev.summary || '(untitled)', x_expand: true,
@@ -363,6 +382,7 @@ export class CalendarWidget {
 
     destroy() {
         this._unsub?.();
+        this._unsubAccent?.();
         if (this._midnight)
             GLib.source_remove(this._midnight);
         this._midnight = 0;
