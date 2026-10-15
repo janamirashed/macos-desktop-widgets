@@ -1,8 +1,0 @@
-*.zip
-*.tar.gz
-*.swp
-*~
-.DS_Store
-.idea/
-.vscode/
-node_modules/

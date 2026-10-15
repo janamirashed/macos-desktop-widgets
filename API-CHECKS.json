@@ -1,0 +1,177 @@
+{
+  "45": {
+    "checks": {
+      "layout_property": "vertical",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/45.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "46": {
+    "checks": {
+      "layout_property": "vertical",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/46.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "47": {
+    "checks": {
+      "layout_property": "vertical",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/47.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "48": {
+    "checks": {
+      "layout_property": "orientation",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/48.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "49": {
+    "checks": {
+      "layout_property": "orientation",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/49.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "50": {
+    "checks": {
+      "layout_property": "orientation",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/50.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  },
+  "51": {
+    "checks": {
+      "layout_property": "orientation",
+      "selected_layout_property_present": true,
+      "calendar_event_source": true,
+      "calendar_getEvents": true,
+      "calendar_requestRange": true,
+      "quick_settings_addItem": true,
+      "quick_settings_completeAddItem": true,
+      "background_group": true,
+      "workspace_monitor": true,
+      "workspace_groups": true,
+      "workspace_background": true,
+      "screenshot_color_finish": true
+    },
+    "source_urls": [
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/js/ui/calendar.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/js/ui/quickSettings.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/js/ui/layout.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/js/ui/workspaceAnimation.js",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/src/st/st-box-layout.c",
+      "https://raw.githubusercontent.com/GNOME/gnome-shell/51.0/src/shell-screenshot.c"
+    ],
+    "runtime_tested_distribution": false
+  }
+}

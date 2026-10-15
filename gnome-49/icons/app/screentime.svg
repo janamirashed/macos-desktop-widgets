@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="stGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6c4fcc"/>
+      <stop offset="100%" stop-color="#3b2c8c"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="url(#stGrad)"/>
+  <path fill="#ffffff" d="M28 35h44a5 5 0 0 1 5 5v20a5 5 0 0 1-5 5H28a5 5 0 0 1-5-5V40a5 5 0 0 1 5-5zm0 3a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h44a2 2 0 0 0 2-2V40a2 2 0 0 0-2-2H28z"/>
+  <rect x="42" y="68" width="16" height="3" rx="1.5" fill="#ffffff"/>
+  <rect x="38" y="73" width="24" height="2" rx="1" fill="#ffffff" opacity="0.6"/>
+  <rect x="35" y="44" width="4" height="14" rx="1.5" fill="#8b7fd4"/>
+  <rect x="41" y="48" width="4" height="10" rx="1.5" fill="#a893e8"/>
+  <rect x="47" y="42" width="4" height="16" rx="1.5" fill="#8b7fd4"/>
+  <rect x="53" y="46" width="4" height="12" rx="1.5" fill="#c4b5f0"/>
+  <rect x="59" y="50" width="4" height="8" rx="1.5" fill="#a893e8"/>
+  <rect x="65" y="52" width="4" height="6" rx="1.5" fill="#8b7fd4"/>
+</svg>
