@@ -1,0 +1,10 @@
+{
+  "uuid": "peachos-widgets@peachos",
+  "name": "macOS Desktop Widgets",
+  "description": "macOS-style liquid-glass desktop widgets: clock, weather, calendar, reminders, screen time, and GitHub heatmap.",
+  "shell-version": [
+    "49"
+  ],
+  "version-name": "0.3.0-gnome49",
+  "settings-schema": "org.gnome.shell.extensions.peachos-widgets"
+}

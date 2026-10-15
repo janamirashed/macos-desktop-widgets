@@ -1,0 +1,76 @@
+{
+  "versions": [
+    {
+      "version": 45,
+      "javascript_files_parsed": 45,
+      "layout_property": "vertical",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    },
+    {
+      "version": 46,
+      "javascript_files_parsed": 45,
+      "layout_property": "vertical",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": true
+    },
+    {
+      "version": 47,
+      "javascript_files_parsed": 45,
+      "layout_property": "vertical",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    },
+    {
+      "version": 48,
+      "javascript_files_parsed": 45,
+      "layout_property": "orientation",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    },
+    {
+      "version": 49,
+      "javascript_files_parsed": 45,
+      "layout_property": "orientation",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    },
+    {
+      "version": 50,
+      "javascript_files_parsed": 45,
+      "layout_property": "orientation",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    },
+    {
+      "version": 51,
+      "javascript_files_parsed": 45,
+      "layout_property": "orientation",
+      "schema_checked": true,
+      "archive_checked": true,
+      "blank_account_defaults": true,
+      "runtime_tested_distribution": false,
+      "baseline_user_tested_gnome46": false
+    }
+  ],
+  "source_unchanged": true,
+  "installed": false
+}
