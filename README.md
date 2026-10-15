@@ -108,10 +108,6 @@ bash uninstall.sh
 
 Log out and back in afterward. The uninstaller removes the extension; saved settings, keyring entries, and fonts are not removed by that script.
 
-## Contributing and releases
-
-See [version-specific builds and validation](new/README.md) and [how to attach ZIP packages to a release](docs/RELEASING.md). ZIP archives are ignored by Git and can be uploaded separately as release assets.
-
 ## License and attribution
 
 GPL-3.0. Preserve upstream copyright and attribution notices when redistributing. Service logo sources are listed in [icons/app/SOURCES.md](icons/app/SOURCES.md).
